@@ -1,0 +1,47 @@
+PUSH1 1 // Required for Less code and to prevent stack underflow and for the starting case
+CALLVALUE
+
+// Check for base cases 0,1 and bypass to output
+PUSH1 2
+DUP2
+LT
+PUSH32 0x80
+JUMPI
+
+
+// Reduce the calldata by one since first loop is solved for 1, subbing using the 1 pushed at the beginning
+SUB
+
+// Store counter
+PUSH1 0
+MSTORE
+
+// Start Summing Fib
+PUSH32 0
+PUSH32 1
+JUMPDEST // Loop startpoint
+DUP1
+SWAP2
+ADD
+
+PUSH1 1
+PUSH1 0
+MLOAD
+SUB
+
+DUP1
+PUSH1 0
+MSTORE
+PUSH1 0x6f
+JUMPI // Loop endpoint
+
+// Returning result
+JUMPDEST
+
+PUSH0
+MSTORE
+POP
+
+MSIZE
+PUSH0
+RETURN
